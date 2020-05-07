@@ -17,7 +17,7 @@
         -Tests
         -Questions
 #### Installation:
-    npm inquirer || npm jest
+    npm inquirer || npm jest ||
 #### Usage:
     
 #### License:
@@ -28,5 +28,3 @@
     jest
 #### Questions:
     If any questions persist, please direct them to my email: andrew.reeves.coding.bootcamp@gmail.com
-    
-![badge](https://img.shields.io/github/languages/top/nielsenjared/badmath)
