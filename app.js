@@ -11,54 +11,82 @@ const render = require("./lib/htmlRenderer");
 let managerChosen = false;
 const employees = []
 
-
-const employeeQuestions = [{
-        type: "input",
-        message: "Employee name?",
-        name: "name"
-    },
-    {
-        type: "number",
-        message: "Employee ID?",
-        name: "id"
-    },
-    {
-        type: "input",
-        message: "Employee email?",
-        name: "email"
-    },
-    managerChosen ? {
-        type: "list",
-        message: "What is the employee's role?",
-        choices: ["Engineer", "Intern"],
-        name: "role"
-    } : {
-        type: "list",
-        message: "What is the employee's role?",
-        choices: ["Manager", "Engineer", "Intern"],
-        name: "role"
-    }
-]
-
-const managerQuestions = [{
-    type: "number",
-    message: "Office number?",
-    name: "office"
-}]
-
-const engineerQuestions = [{
-    type: "input",
-    message: "Github username?",
-    name: "github"
-}]
-
-const internQuestions = [{
-    type: "input",
-    message: "School name?",
-    name: "school"
-}]
-
 async function generateEmployee() {
+    const employeeQuestions = [{
+            type: "input",
+            message: "Employee name?",
+            name: "name",
+            validate: (name) => {
+                let regexp = /[A-Z]/gi;
+                let result = name.match(regexp) ? true : "   Please input proper value";
+                return result
+            }
+        },
+        {
+            type: "input",
+            message: "Employee ID?",
+            name: "id",
+            validate: (name) => {
+                let regexp = /[0-9]/gi;
+                let result = name.match(regexp) ? true : "   Please input proper value";
+                return result
+            },
+        },
+        {
+            type: "input",
+            message: "Employee email?",
+            name: "email",
+            validate: (name) => {
+                let regexp = /([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})/gi;
+                let result = name.match(regexp) ? true : "   Please input a proper value";
+                return result
+            }
+        },
+        managerChosen ? {
+            type: "list",
+            message: "What is the employee's role?",
+            choices: ["Engineer", "Intern"],
+            name: "role"
+        } : {
+            type: "list",
+            message: "What is the employee's role?",
+            choices: ["Manager", "Engineer", "Intern"],
+            name: "role"
+        }
+    ]
+
+    const managerQuestions = [{
+        type: "input",
+        message: "Office number?",
+        name: "office",
+        validate: (name) => {
+            let regexp = /[0-9]/gi;
+            let result = name.match(regexp) ? true : "   Please input proper value";
+            return result
+        }
+    }]
+
+    const engineerQuestions = [{
+        type: "input",
+        message: "Github username?",
+        name: "github",
+        validate: (name) => {
+            let regexp = /[A-Z]/gi;
+            let result = name.match(regexp) ? true : "   Please input proper value";
+            return result
+        }
+    }]
+
+    const internQuestions = [{
+        type: "input",
+        message: "School name?",
+        name: "school",
+        validate: (name) => {
+            let regexp = /[A-Z]/gi;
+            let result = name.match(regexp) ? true : "   Please input proper value";
+            return result
+        }
+    }]
 
     const info = await inquirer.prompt(employeeQuestions);
 
@@ -73,8 +101,9 @@ async function generateEmployee() {
             info.role,
             office.office)
 
-        employees.push(newEmployee)
         managerChosen = true;
+
+        employees.push(newEmployee)
         addEmployee()
     };
     if (info.role === "Engineer") {
@@ -114,7 +143,7 @@ async function addEmployee() {
         message: 'Add another employee?',
         name: 'choice'
     }]);
-    console.log(managerChosen)
+
     addEmployee.choice ? generateEmployee() : renderHTML()
 }
 
@@ -129,23 +158,3 @@ async function renderHTML() {
 }
 
 generateEmployee()
-
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an 
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work!```
